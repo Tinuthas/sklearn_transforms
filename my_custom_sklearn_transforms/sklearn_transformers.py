@@ -14,3 +14,19 @@ class DropColumns(BaseEstimator, TransformerMixin):
         data = X.copy()
         # Retornamos um novo dataframe sem as colunas indesejadas
         return data.drop(labels=self.columns, axis='columns')
+
+
+class NotesVerify(BaseEstimator, TransformerMixin):
+    def __init__(self, columns):
+        self.columns = columns
+
+    def fit(self, X, y=None):
+        return self
+
+    def transform(self, X):
+        # Primeiro realizamos a cópia do dataframe 'X' de entrada
+        data = X.copy()
+        for column in self.columns:
+            data[column] = list(map(lambda x: x if (x <= 10.0) else 10.0, data[column]))
+        # Retornamos um novo dataframe sem as colunas indesejadas
+        return data
